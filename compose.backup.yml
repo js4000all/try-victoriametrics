@@ -1,0 +1,11 @@
+
+services:
+  vmbackup:
+    image: victoriametrics/vmbackup:latest
+    volumes:
+      - vmstorage-data:/storage:ro
+      - ./backup:/backup
+    command:
+      - '-storageDataPath=/storage'
+      - '-snapshot.createURL=http://vmstorage:8428/snapshot/create'
+      - '-dst=fs:///backup/vmstorage'

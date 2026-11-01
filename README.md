@@ -31,3 +31,23 @@ Grafanaにログイン後、以下の手順でVictoriaMetricsをデータソー�
 3. 「Prometheus」を選択
 4. URLに `http://vmselect:8481/select/0/prometheus/` を入力
 5. 「Save & Test」をクリック
+
+
+## バックアップ取得
+
+```bash
+mkdir -p ./backup
+docker compose \
+  -f docker-compose.yml \
+  -f compose.backup.yml \
+  run --rm --no-deps vmbackup
+sudo chown -R 1000:1000 ./backup
+```
+
+固める。
+```bash
+tar -czf vmstorage-backup.tar.gz -C ./backup vmstorage
+tar -tzf vmstorage-backup.tar.gz > /dev/null
+sha256sum vmstorage-backup.tar.gz > vmstorage-backup.tar.gz.sha256
+sha256sum -c vmstorage-backup.tar.gz.sha256
+```
